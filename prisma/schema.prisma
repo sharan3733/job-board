@@ -21,6 +21,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   job           Job[]
+  company       Boolean @default(false)
 
 }
 
@@ -60,6 +61,7 @@ model Session {
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
 model Job {
   id           Int      @id @default(autoincrement())
   createdAt    DateTime @default(now())
