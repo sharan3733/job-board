@@ -4,9 +4,11 @@ import { getServerSession } from "next-auth"
 import { getJob, alreadyApplied } from "@/lib/data"
 
 export default async function handler (req, res) {
-    if(req.method !== 'POST'){
+    if(req.method !== 'POST' && req.method !== 'PUT'){
         return res.status(501).end()
     }
+
+
     const session = await getServerSession(req, res, authOptions)
     if (!session) return res.status(401).json({message: 'Not logged in'})
     const user = await prisma.user.findUnique({
@@ -34,6 +36,7 @@ export default async function handler (req, res) {
          return res
          .status(400)
          .json({message: 'Required parameter salary missing'})
+         
     
 
     await prisma.job.create({
@@ -47,6 +50,44 @@ export default async function handler (req, res) {
             },
         },
     })
-    res.status(200).end()
-}
-}
+    res.status(200).end()   
+    }
+
+if (req.method === 'PUT') {
+    const job = await prisma.job.findUnique({
+      where: {
+        id: parseInt(req.body.id),
+      },
+    })
+  
+    if (job.authorId !== user.id) {
+      res.status(401).json({ message: 'Not authorized to edit' })
+    }
+    if (req.body.task === 'publish') {
+        await prisma.job.update({
+          where: {
+            id: parseInt(req.body.id),
+          },
+          data: {
+            published: true,
+          },
+        })
+      }
+    
+      if (req.body.task === 'unpublish') {
+        await prisma.job.update({
+          where: {
+            id: parseInt(req.body.id),
+          },
+          data: {
+            published: false,
+          },
+        })
+      }
+    
+      res.status(200).end()
+      return
+    }
+  
+  
+  }
