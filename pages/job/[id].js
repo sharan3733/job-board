@@ -1,9 +1,11 @@
 import { getJob } from "@/lib/data"
 import prisma from "@/lib/prisma"
 import Link from "next/link"
-import { getJob, alreadyApplied } from "@/lib/data"
+
 import { getServerSession } from "next-auth"
 import { authOptions } from "../api/auth/[...nextauth]"
+import { alreadyApplied } from "@/lib/data"
+
 
 export default function Job({ job, applied }) {
     return (
@@ -20,7 +22,7 @@ export default function Job({ job, applied }) {
                 {applied ? (
                     <div className="mt-20 flex justify-center">
                         <Link href={`/dashboard`}>
-                            <button className="border px-8 py-2 mt-0 font-bold rounded-full bg-back text-white">
+                            <button className="border px-8 py-2 mt-0 font-bold rounded-full bg-black text-white">
 
                                 You already applied
                             </button>
