@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma"
 import { authOptions } from "./auth/[...nextauth]"
 import { getServerSession } from "next-auth"
+import { getJob, alreadyApplied } from "@/lib/data"
 
 export default async function handler (req, res) {
     if(req.method !== 'POST'){
