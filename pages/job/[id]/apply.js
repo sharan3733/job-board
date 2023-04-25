@@ -9,7 +9,7 @@ import prisma from 'lib/prisma'
 
 export default function Apply({ job }) {
   const [coverletter, setCoverletter] = useState('')
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const router = useRouter()
 
   if (!session) return null
